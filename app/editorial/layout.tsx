@@ -11,10 +11,10 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
   const isActive = (path: string) => pathname === path;
 
   const tabs = [
-    { href: "/editorial/submissions", label: "SUBMISSIONS" },
-    { href: "/editorial/reviews", label: "REVIEWS" },
-    { href: "/editorial/published", label: "PUBLISHED" },
-    { href: "/editorial/analytics", label: "ANALYTICS" },
+    { href: "/editorial/assignments", label: "MY ASSIGNMENTS" },
+    { href: "/editorial/available", label: "AVAILABLE PROJECTS" },
+    { href: "/editorial/timeline", label: "TIMELINE" },
+    { href: "/editorial/chat", label: "AUTHOR CHAT" },
   ];
 
   const [darkMode, setDarkMode] = useState(true);
@@ -50,14 +50,14 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
           <Link href="/mainpage" className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor} hover:bg-white/10 transition`}>
             MAIN PAGE <span>→</span>
           </Link>
-          <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor} bg-white/10`}>
-            EDITORIAL STUDIO <span>→</span>
+          <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor}`}>
+            WRITER'S STUDIO <span>→</span>
           </button>
           <FiEdit3 className="w-5 h-5 ml-3" />
           <input
             type="text"
             className={`px-3 py-1 border-0 border-b bg-transparent text-sm focus:outline-none focus:ring-0 ${borderColor} ${placeholderColor}`}
-            placeholder="Search submissions..."
+            placeholder="Search projects..."
             value=""
             onChange={() => {}}
           />
@@ -134,15 +134,15 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
         {/* Nav */}
         <nav className="flex flex-col p-6 gap-6 uppercase text-[13px] font-semibold tracking-wide">
           {[
-            "PENDING SUBMISSIONS",
-            "IN REVIEW",
-            "APPROVED STORIES",
-            "REJECTED STORIES",
-            "FEATURED CONTENT",
-            "AUTHOR MANAGEMENT",
-            "CONTENT CALENDAR",
-            "EDITORIAL GUIDELINES",
-            "REPORTS & ANALYTICS",
+            "ACTIVE ASSIGNMENTS",
+            "COMPLETED PROJECTS",
+            "EDITING GUIDELINES",
+            "AUTHOR COMMUNICATIONS",
+            "PROJECT REQUESTS",
+            "DEADLINE TRACKER",
+            "EDITING TOOLS",
+            "FEEDBACK TEMPLATES",
+            "PERFORMANCE METRICS",
           ].map((item, idx) => (
             <Link
               key={idx}

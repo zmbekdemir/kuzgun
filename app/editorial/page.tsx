@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function EditorialPage() {
-  redirect("/editorial/submissions");
+  redirect("/editorial/assignments");
   return null;
 }
