@@ -46,9 +46,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           <div className={`border rounded p-1 ${borderColor}`}>
             <FiMenu className="w-5 h-5 cursor-pointer" onClick={toggleSidebar} />
           </div>
-          <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor}`}>
-            EDITORIAL STUDIO <span>→</span>
-          </button>
           <Link href="/editorial" className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor} hover:bg-white/10 transition`}>
             EDITORIAL STUDIO <span>→</span>
           </Link>
