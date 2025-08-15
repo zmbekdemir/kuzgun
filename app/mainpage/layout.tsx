@@ -49,6 +49,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor}`}>
             EDITORIAL STUDIO <span>→</span>
           </button>
+          <Link href="/editorial" className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor} hover:bg-white/10 transition`}>
+            EDITORIAL STUDIO <span>→</span>
+          </Link>
           <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor}`}>
             WRITING STUDIO <span>→</span>
           </button>
