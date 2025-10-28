@@ -2,13 +2,25 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { useTheme } from "@/app/theme/ThemeProvider";
+
 import { FiMenu, FiEdit3 } from "react-icons/fi";
 import { FaUserFriends, FaComments, FaUserCircle } from "react-icons/fa";
-import Image from "next/image";
 
 export default function EditorialLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { isDark, toggleTheme } = useTheme();
+
   const isActive = (path: string) => pathname === path;
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+
+  // Prevent background scroll when sidebar is open
+  useEffect(() => {
+    document.body.style.overflow = isSidebarOpen ? "hidden" : "auto";
+  }, [isSidebarOpen]);
 
   const tabs = [
     { href: "/editorial/assignments", label: "MY ASSIGNMENTS" },
@@ -17,49 +29,36 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
     { href: "/editorial/chat", label: "AUTHOR CHAT" },
   ];
 
-  const [darkMode, setDarkMode] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleMode = () => setDarkMode((prev) => !prev);
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-
-  useEffect(() => {
-    document.body.style.overflow = isSidebarOpen ? "hidden" : "auto";
-  }, [isSidebarOpen]);
-
-  // === Color Class Helpers
-  const bgColor = darkMode ? "bg-custom-brown" : "bg-custom-beige";
-  const textColor = darkMode ? "text-custom-gold" : "text-custom-orange";
-  const borderColor = darkMode ? "border-custom-gold" : "border-custom-orange";
-  const placeholderColor = darkMode
-    ? "placeholder-custom-gold/60"
-    : "placeholder-custom-orange/60";
-  const inactiveText = darkMode
-    ? "text-custom-gold/60 hover:text-custom-gold"
-    : "text-custom-orange/60 hover:text-custom-orange";
-
   return (
-    <div className={`min-h-screen px-6 py-4 font-spectral transition-colors duration-300 ${bgColor} ${textColor}`}>
+    <div className="min-h-dvh px-6 py-4 font-spectral bg-background text-foreground transition-colors duration-300">
       {/* Top Navbar */}
       <div className="flex justify-between items-center mb-6">
         {/* Left Section */}
         <div className="flex items-center gap-3">
-          <div className={`border rounded p-1 ${borderColor}`}>
+          <div className="border border-accent rounded p-1">
             <FiMenu className="w-5 h-5 cursor-pointer" onClick={toggleSidebar} />
           </div>
-          <Link href="/mainpage" className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor} hover:bg-white/10 transition`}>
+
+          <Link
+            href="/mainpage"
+            className="px-3 py-1 rounded text-sm flex items-center gap-1 border border-accent hover:bg-foreground/10 transition"
+          >
             MAIN PAGE <span>→</span>
           </Link>
-          <button className={`px-3 py-1 rounded text-sm flex items-center gap-1 border ${borderColor}`}>
+
+          <Link
+            href="/writing"
+            className="px-3 py-1 rounded text-sm flex items-center gap-1 border border-accent hover:bg-foreground/10 transition"
+          >
             WRITER'S STUDIO <span>→</span>
-          </button>
+          </Link>
+
           <FiEdit3 className="w-5 h-5 ml-3" />
+
           <input
             type="text"
-            className={`px-3 py-1 border-0 border-b bg-transparent text-sm focus:outline-none focus:ring-0 ${borderColor} ${placeholderColor}`}
             placeholder="Search projects..."
-            value=""
-            onChange={() => {}}
+            className="px-3 py-1 border-0 border-b border-accent bg-transparent text-sm focus:outline-none focus:ring-0 placeholder-accent/60"
           />
         </div>
 
@@ -76,21 +75,21 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       </div>
 
       {/* Tabs */}
-      <div className={`w-full flex justify-center mb-6 border-b ${borderColor}/20`}>
+      <div className="w-full flex justify-center mb-6 border-b border-accent/20">
         <div className="flex gap-12 text-lg font-semibold text-center">
           {tabs.map((tab) => {
-            const isActiveTab = isActive(tab.href);
+            const active = isActive(tab.href);
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`transition-all max-w-[12rem] h-16 flex items-center justify-center text-center break-words ${
-                  isActiveTab
-                    ? `${textColor} text-2xl font-bold underline underline-offset-8`
-                    : `${inactiveText} text-base`
+                className={`transition-all max-w-[12rem] h-16 flex items-center justify-center ${
+                  active
+                    ? "text-accent text-2xl font-bold underline underline-offset-8"
+                    : "text-accent/60 hover:text-accent text-base"
                 }`}
               >
-                <span className="leading-snug">{tab.label}</span>
+                {tab.label}
               </Link>
             );
           })}
@@ -100,11 +99,11 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       {/* Page Content */}
       <main>{children}</main>
 
-      {/* Mode Toggle Button */}
+      {/* Global Theme Toggle */}
       <button
-        onClick={toggleMode}
+        onClick={toggleTheme}
         className={`fixed bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition hover:scale-105
-          ${darkMode ? "bg-custom-gold" : "bg-custom-orange"}`}
+        ${isDark ? "bg-[#A49D96]" : "bg-[#9E7946]"} text-white`}
         aria-label="Toggle Theme"
       >
         <Image src="/icon.png" alt="Toggle Theme" width={20} height={20} />
@@ -113,7 +112,7 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-[2px]"
           onClick={toggleSidebar}
         />
       )}
@@ -122,13 +121,13 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       <div
         className={`fixed top-0 left-0 h-full w-64 z-50 transform transition-transform duration-300 ease-in-out shadow-xl
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          ${darkMode ? "bg-custom-gold text-black" : "bg-custom-beige text-custom-orange"}`}
+          bg-[var(--background)] text-[var(--foreground)]`}
       >
         {/* Header */}
         <div className="p-6">
           <h1 className="text-3xl font-extrabold tracking-widest">KUZGUN</h1>
           <p className="text-xs uppercase tracking-[0.2em] mt-1">Editorial Studio</p>
-          <hr className="mt-3 border-black/20" />
+          <hr className="mt-3 border-[var(--foreground)]/20" />
         </div>
 
         {/* Nav */}
@@ -157,12 +156,12 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
 
         {/* Footer Circle Icon */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-          <button className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition hover:scale-105
-            ${darkMode ? "bg-black text-white" : "bg-custom-orange text-white"}`}>
+          <button className="w-10 h-10 rounded-full flex items-center justify-center shadow-md transition hover:scale-105 bg-[var(--foreground)] text-[var(--background)]">
             E
           </button>
         </div>
       </div>
+
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import './globals.css';
 import { Spectral_SC } from 'next/font/google';
+import { ThemeProvider } from "./theme/ThemeProvider";
 
 const spectralSC = Spectral_SC({
   subsets: ['latin'],
@@ -13,10 +14,17 @@ export const metadata = {
   description: 'Dark login page',
 };
 
+
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={spectralSC.variable}>
-      <body>{children}</body>
+    <html lang="en">
+      {/* Default background for SSR; ThemeProvider adjusts after hydration */}
+      <body className="min-h-dvh bg-custom-brown">
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -1,15 +1,19 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+  content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+      },
       fontFamily: {
-        spectral: ['var(--font-spectral-sc)', 'serif'],
+        spectral: ["var(--font-spectral)", "serif"],
       },
     },
   },
-  darkMode: 'media',
+  darkMode: "class", // We'll toggle with a class
 };
 
 export default config;
