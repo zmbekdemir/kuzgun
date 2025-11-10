@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { FiMenu, FiEdit3 } from "react-icons/fi";
 import { FaUserFriends, FaComments, FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
-import { useTheme } from "@/app/theme/ThemeProvider"; // Make sure path matches your project
+import ThemeToggle from "../theme/ThemeToggle"; // relative import to app/theme/ThemeToggle
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -18,17 +18,19 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     { href: "/mainpage/search", label: "SEARCH" },
   ];
 
-  const { isDark, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
   useEffect(() => {
     document.body.style.overflow = isSidebarOpen ? "hidden" : "auto";
   }, [isSidebarOpen]);
 
   return (
-    <div className="min-h-screen px-6 py-4 font-spectral bg-background text-foreground transition-colors duration-300">
+    <div
+      className="min-h-screen px-6 py-4 font-spectral
+                 bg-[var(--background)] text-[var(--foreground)]
+                 transition-colors duration-300"
+    >
       {/* Top Navbar */}
       <div className="flex justify-between items-center mb-6">
         {/* Left Section */}
@@ -94,14 +96,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <main>{children}</main>
 
       {/* Mode Toggle Button */}
-      <button
-        onClick={toggleTheme}
-        className={`fixed bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition hover:scale-105
-        ${isDark ? "bg-[#A49D96]" : "bg-[#9E7946]"} text-white`}
-        aria-label="Toggle Theme"
-      >
-        <Image src="/icon.png" alt="Toggle Theme" width={20} height={20} />
-      </button>
+      <ThemeToggle />
 
       {/* Sidebar Overlay */}
       {isSidebarOpen && (

@@ -3,16 +3,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { useTheme } from "@/app/theme/ThemeProvider";
+import ThemeToggle from "../theme/ThemeToggle"; // relative import to app/theme/ThemeToggle
 
 import { FiMenu, FiEdit3 } from "react-icons/fi";
 import { FaUserFriends, FaComments, FaUserCircle } from "react-icons/fa";
 
 export default function EditorialLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { isDark, toggleTheme } = useTheme();
-
-  const isActive = (path: string) => pathname === path;
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
@@ -78,16 +75,11 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       <div className="w-full flex justify-center mb-6 border-b border-accent/20">
         <div className="flex gap-12 text-lg font-semibold text-center">
           {tabs.map((tab) => {
-            const active = isActive(tab.href);
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`transition-all max-w-[12rem] h-16 flex items-center justify-center ${
-                  active
-                    ? "text-accent text-2xl font-bold underline underline-offset-8"
-                    : "text-accent/60 hover:text-accent text-base"
-                }`}
+                className={`transition-all max-w-[12rem] h-16 flex items-center justify-center}`}
               >
                 {tab.label}
               </Link>
@@ -100,14 +92,7 @@ export default function EditorialLayout({ children }: { children: React.ReactNod
       <main>{children}</main>
 
       {/* Global Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className={`fixed bottom-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition hover:scale-105
-        ${isDark ? "bg-[#A49D96]" : "bg-[#9E7946]"} text-white`}
-        aria-label="Toggle Theme"
-      >
-        <Image src="/icon.png" alt="Toggle Theme" width={20} height={20} />
-      </button>
+      <ThemeToggle />
 
       {/* Sidebar Overlay */}
       {isSidebarOpen && (

@@ -1,6 +1,5 @@
 import './globals.css';
 import { Spectral_SC } from 'next/font/google';
-import { ThemeProvider } from "./theme/ThemeProvider";
 
 const spectralSC = Spectral_SC({
   subsets: ['latin'],
@@ -12,18 +11,19 @@ const spectralSC = Spectral_SC({
 export const metadata = {
   title: 'KUZGUN',
   description: 'Dark login page',
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className='dark'>
       {/* Default background for SSR; ThemeProvider adjusts after hydration */}
-      <body className="min-h-dvh bg-custom-brown">
-        <ThemeProvider>
+      <body className="min-h-dvh dark">
           {children}
-        </ThemeProvider>
       </body>
     </html>
   );

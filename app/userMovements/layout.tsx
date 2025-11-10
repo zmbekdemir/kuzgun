@@ -1,8 +1,21 @@
-// app/components/AuthLayout.tsx
+"use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    document.body.classList.add("dark");
+    document.body.classList.remove("light");
+
+    return () => {
+      const stored = localStorage.getItem("theme");
+      if (stored) {
+        document.body.classList.remove("dark", "light");
+        document.body.classList.add(stored);
+      }
+    };
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen w-screen overflow-hidden font-serif">
       {/* Left Side - Image with inline SVG */}
